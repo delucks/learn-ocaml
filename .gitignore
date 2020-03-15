@@ -1,0 +1,6 @@
+learnocaml.ml
+*.out
+*.cmi
+*.cmo
+*.swp
+*.swo
