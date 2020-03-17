@@ -57,21 +57,15 @@ let flatten list =
 ;;
 
 (*** Problem 8 ***)
-(*
- * Compressing a list:
- * previous_item = Null value
- * result_list = [ ]
- * for item in list
- *   if item == previous_item
- *     skip
- *   else
- *     result_list append item
- *     previous_item = item
+(* Rewritten after looking at the solution, here's what I learned.
+ * You don't need to track state if you're returning a type that's exactly what you recieve
+ * Pattern matching is so expressive for binding variables and establishing state: from the solution,
+ *     a :: (b :: _ as t)
+ * this binds three variables, the first element, second element, and the second+tail elements all in one expression.
+ * In doing so, it also avoids the additional cons that I incur calling "first :: compress (second :: tail)" in my solution.
+ * The "smaller -> smaller" notation used below is a catch-all case, not some kind of comparison.
  *)
-let compress list =
-  let rec inner_compress last acc = function
-    | [] -> acc
-    | [x] -> if x != last then x :: acc else acc
-    | head :: tail -> if head != last then (inner_compress head (head :: acc) tail) else acc in
-  inner_compress "" [] list
+let rec compress = function
+  | first :: second :: tail -> if first = second then compress tail else first :: compress (second :: tail)
+  | smaller -> smaller
 ;;
