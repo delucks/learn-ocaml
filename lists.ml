@@ -62,10 +62,10 @@ let flatten list =
  * Pattern matching is so expressive for binding variables and establishing state: from the solution,
  *     a :: (b :: _ as t)
  * this binds three variables, the first element, second element, and the second+tail elements all in one expression.
- * In doing so, it also avoids the additional cons that I incur calling "first :: compress (second :: tail)" in my solution.
+ * In doing so, it also avoids the additional cons that I incur calling "compress (second :: tail)" in my solution.
  * The "smaller -> smaller" notation used below is a catch-all case, not some kind of comparison.
  *)
 let rec compress = function
-  | first :: second :: tail -> if first = second then compress tail else first :: compress (second :: tail)
+  | first :: second :: tail -> if first = second then compress (second :: tail) else first :: compress (second :: tail)
   | smaller -> smaller
 ;;
