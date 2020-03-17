@@ -77,8 +77,9 @@ let rec compress = function
  *)
 let pack list =
   let rec inner_pack curr acc = function
-    | a :: (b :: _ as tail) when a = b -> inner_pack (a :: curr) acc tail
-    | a :: (b :: _ as tail) when a != b -> inner_pack [] ((a :: curr) :: acc) tail
+    | a :: (b :: _ as tail) ->
+        if a = b then inner_pack (a :: curr) acc tail
+        else inner_pack [] ((a :: curr) :: acc) tail
     | [x] -> (x :: curr) :: acc
     | [] -> [] in
   reverse_list (inner_pack [] [] list)
