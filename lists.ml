@@ -69,3 +69,17 @@ let rec compress = function
   | first :: second :: tail -> if first = second then compress (second :: tail) else first :: compress (second :: tail)
   | smaller -> smaller
 ;;
+
+(*** Problem 9 ***)
+(* Here, my intuition to use match clause guards was correct, but I got confused by where to cons "b" in the form
+ * a :: b :: tail, so I changed it to use the "as" assignment pattern like the previous question. The assignment
+ * within match blocks is a useful shorthand to avoid this kind of positional space confusion.
+ *)
+let pack list =
+  let rec inner_pack curr acc = function
+    | a :: (b :: _ as tail) when a = b -> inner_pack (a :: curr) acc tail
+    | a :: (b :: _ as tail) when a != b -> inner_pack [] ((a :: curr) :: acc) tail
+    | [x] -> (x :: curr) :: acc
+    | [] -> [] in
+  reverse_list (inner_pack [] [] list)
+;;
