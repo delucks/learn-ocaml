@@ -55,3 +55,23 @@ let flatten list =
     | Many x :: tail -> inner_flatten (inner_flatten acc x) tail in
   reverse_list (inner_flatten [] list)
 ;;
+
+(*** Problem 8 ***)
+(*
+ * Compressing a list:
+ * previous_item = Null value
+ * result_list = [ ]
+ * for item in list
+ *   if item == previous_item
+ *     skip
+ *   else
+ *     result_list append item
+ *     previous_item = item
+ *)
+let compress list =
+  let rec inner_compress last acc = function
+    | [] -> acc
+    | [x] -> if x != last then x :: acc else acc
+    | head :: tail -> if head != last then (inner_compress head (head :: acc) tail) else acc in
+  inner_compress "" [] list
+;;
