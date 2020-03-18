@@ -95,3 +95,22 @@ let run_length_encode list =
     | [] -> [] in
   reverse_list (rle_aux 0 [] list)
 ;;
+
+(*** Problem 11 ***)
+type 'a run_length_encoded =
+  | One of 'a
+  | Many of int * 'a
+;;
+
+let rle list =
+  let pack_run_length_encoded count value =
+    if count = 0 then One value
+    else Many (count+1, value) in
+  let rec rle_aux count acc = function
+    | a :: (b :: _ as tail) ->
+        if a = b then rle_aux (count+1) acc tail
+        else rle_aux 0 ((pack_run_length_encoded count a) :: acc) tail
+    | [x] -> (pack_run_length_encoded count x) :: acc
+    | [] -> [] in
+  reverse_list (rle_aux 0 [] list)
+;;
