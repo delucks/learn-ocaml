@@ -114,3 +114,18 @@ let rle list =
     | [] -> [] in
   reverse_list (rle_aux 0 [] list)
 ;;
+
+(*** Problem 12 ***)
+let decode_rle list =
+  let rec construct_n_list count value acc =
+    match count with
+    | 0 -> acc
+    | _ -> construct_n_list (count-1) value (value :: acc) in
+  let rec decode_aux acc = function
+    | head :: tail -> 
+        (match head with
+          | One x -> decode_aux (x :: acc) tail
+          | Many (ct, x) -> decode_aux ((construct_n_list ct x []) @ acc) tail)
+    | [] -> acc in
+  reverse_list (decode_aux [] list)
+;;
