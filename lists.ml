@@ -87,10 +87,11 @@ let pack list =
 
 (*** Problem 10 ***)
 let run_length_encode list =
-  let process_packed_list = function
-    | head :: _ as collected -> (length collected, head) in
-  let rec rle_aux acc = function
-    | head :: tail -> rle_aux ((process_packed_list head) :: acc) tail
-    | [] -> acc in
-  reverse_list (rle_aux [] (pack list))
+  let rec rle_aux count acc = function
+    | a :: (b :: _ as tail) ->
+        if a = b then rle_aux (count+1) acc tail
+        else rle_aux 0 ((count+1, a) :: acc) tail
+    | [x] -> (count+1, x) :: acc
+    | [] -> [] in
+  reverse_list (rle_aux 0 [] list)
 ;;
