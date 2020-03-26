@@ -122,10 +122,20 @@ let decode_rle list =
     | 0 -> acc
     | _ -> construct_n_list (count-1) value (value :: acc) in
   let rec decode_aux acc = function
-    | head :: tail -> 
+    | head :: tail ->
         (match head with
           | One x -> decode_aux (x :: acc) tail
           | Many (ct, x) -> decode_aux ((construct_n_list ct x []) @ acc) tail)
     | [] -> acc in
   reverse_list (decode_aux [] list)
+;;
+
+(* Problem 13 is confusing because it's asking for an equivalent implementation to my #11... so going to skip that *)
+
+(*** Problem 14 ***)
+let duplicate list =
+  let rec duplicate_aux acc = function
+    | head :: tail -> duplicate_aux (head :: head :: acc) tail
+    | [] -> acc in
+  reverse_list (duplicate_aux [] list)
 ;;
